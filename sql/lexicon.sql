@@ -1,29 +1,31 @@
 SET search_path TO PUBLIC;
 
+
 CREATE TABLE IF NOT EXISTS _lexicon(
 	id	BIGSERIAL PRIMARY KEY,
-	pos	BIGINT REFERENCES _pos(id) ON DELETE CASCADE,
 	word	VARCHAR(64) NOT NULL,
+	tag	BIGINT REFERENCES _upenn_treebank_tagset(id) ON DELETE CASCADE,
 	flag	INT,
-	UNIQUE(pos, word)
+	UNIQUE(word, tag)
 );
+
 
 
 CREATE OR REPLACE PROCEDURE lexicon_add(
 	p_word	VARCHAR(64),
-	p_pos	VARCHAR(6),
+	p_tag	VARCHAR(6),
 	p_flag	INT
 ) AS $$
 DECLARE
-	v_pos	BIGINT;
+	v_tag	BIGINT;
 BEGIN
-	v_pos := (SELECT id FROM _pos WHERE name = p_pos);
+	v_tag := (SELECT id FROM _upenn_treebank_tagset WHERE tag = p_tag);
 
 	IF NOT FOUND THEN
-		RAISE EXCEPTION 'POS % not available', p_pos;
+		RAISE EXCEPTION 'PoS tag % not available', p_tag;
 	END IF;
 
-	INSERT INTO _lexicon(pos, word, flag) VALUES(v_pos, p_word, p_flag)
+	INSERT INTO _lexicon(tag, word, flag) VALUES(v_tag, p_word, p_flag)
 	    ON CONFLICT DO NOTHING;
 END;
 $$ LANGUAGE PLPGSQL;
