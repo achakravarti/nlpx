@@ -1,0 +1,21 @@
+SET SEARCH_PATH TO PUBLIC;
+
+
+CREATE TABLE IF NOT EXISTS _corpus(
+	id	BIGSERIAL PRIMARY KEY,
+	title	VARCHAR(256) NOT NULL,
+	author	VARCHAR(512) NOT NULL,
+	UNIQUE(title)
+);
+
+
+CREATE OR REPLACE PROCEDURE corpus_add(
+	p_title		VARCHAR(256),
+	p_author	VARCHAR(256)
+) AS $$
+BEGIN
+	INSERT INTO _corpus(title, author) VALUES(p_title, p_author)
+	    ON CONFLICT DO NOTHING;
+END;
+$$ LANGUAGE PLPGSQL;
+

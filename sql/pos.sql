@@ -1,9 +1,6 @@
 SET SEARCH_PATH TO PUBLIC;
 
 
-DROP TABLE IF EXISTS _upenn_treebank_tagset CASCADE;
-
-
 -- https://stackoverflow.com/questions/15388831
 -- https://www.ling.upenn.edu/courses/Fall_2003/ling001/penn_treebank_pos.html
 
