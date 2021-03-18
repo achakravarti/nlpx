@@ -1,0 +1,4 @@
+SET search_path TO PUBLIC;
+
+DROP SCHEMA IF EXISTS tag CASCADE;
+
