@@ -45,5 +45,19 @@ RETURNS TABLE(
 	pos	VARCHAR(5),
 	def	VARCHAR(128)
 ) AS $func$
-	SELECT id, class, pos, def FROM tag.pos;
+	SELECT id, class, pos, def FROM tag.pos ORDER BY class, pos;
+$func$ LANGUAGE sql;
+
+
+CREATE OR REPLACE FUNCTION tag.dependency_list()
+RETURNS TABLE(
+) AS $func$
+	SELECT id, label, def FROM tag.dependency ORDER BY label;
+$func$ LANGUAGE sql;
+
+
+CREATE OR REPLACE FUNCTION tag.entity_list()
+RETURNS TABLE(
+) AS $func$
+	SELECT id, name, def FROM tag.entity ORDER BY name;
 $func$ LANGUAGE sql;

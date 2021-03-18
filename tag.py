@@ -4,7 +4,6 @@
 import json
 import psycopg2
 from psycopg2.extras import RealDictCursor
-from psycopg2.extras import NamedTupleCursor
 
 
 class Database:
@@ -18,11 +17,19 @@ class Database:
 
 
     def script(self, script):
+        """
+        Executes an SQL script file.
+        """
+
         with self.__conn.cursor() as cur:
             cur.execute(open('sql/' + script + '.sql', 'r').read())
 
 
     def proc(self, proc, params=None, args=None):
+        """
+        Executes a PostgreSQL stored procedure.
+        """
+
         with self.__conn.cursor() as cur:
             if params is None:
                 cur.execute("CALL " + proc + "();")
@@ -31,17 +38,18 @@ class Database:
 
 
     def func(self, func, args=None):
+        """
+        Executes a PostgreSQL function.
+        """
+
         with self.__conn.cursor(cursor_factory=RealDictCursor) as cur:
             cur.callproc(func, args)
             return json.dumps(cur.fetchall(), indent=2)
 
 
 class TagSchema:
-    '''
-    TODO
-    '''
 
-    # https://github.com/explosion/spaCy/blob/master/spacy/glossary.py
+    # https://github.com/explosion/spaCy/blob/master/spacy/glossary.py
     __POS_UNIVERSAL = {
         'ADJ': 'adjective',
         'ADP': 'adposition',
@@ -226,42 +234,44 @@ class TagSchema:
         "GPE_LOC": "Geo-political entity, with a locative sense, e.g. 'John lives in Spain'",
         "GPE_ORG": "Geo-political entity, with an organisation sense, e.g. 'Spain declined to meet with Belgium'",
     }
-    
 
-    def create(self):
-        '''
+
+    @staticmethod
+    def create():
+        """
         Create database
-        '''
+        """
 
-        db = Database()
-        db.script('tag/domain')
-        db.script('tag/iface')
+        dbase = Database()
+        dbase.script('tag/domain')
+        dbase.script('tag/iface')
 
 
     def populate(self):
-        '''
+        """
         Populate database
-        '''
+        """
 
-        db = Database()
+        dbase = Database()
 
         for key in self.__POS_UNIVERSAL:
-            db.proc("tag.pos_add_universal", "%s, %s",
-                (key, self.__POS_UNIVERSAL[key]))
+            dbase.proc("tag.pos_add_universal", "%s, %s",
+                       (key, self.__POS_UNIVERSAL[key]))
 
         for key in self.__POS_PENN_TREEBANK:
-            db.proc("tag.pos_add_penn_treebank", "%s, %s", 
-                (key, self.__POS_PENN_TREEBANK[key]))
-        
+            dbase.proc("tag.pos_add_penn_treebank", "%s, %s",
+                       (key, self.__POS_PENN_TREEBANK[key]))
+
         for key in self.__DEPENDENCY:
-            db.proc("tag.dependency_add", "%s, %s",
-                (key, self.__DEPENDENCY[key]))
+            dbase.proc("tag.dependency_add", "%s, %s",
+                       (key, self.__DEPENDENCY[key]))
 
         for key in self.__ENTITY:
-            db.proc("tag.entity_add", "%s, %s", (key, self.__ENTITY[key]))
+            dbase.proc("tag.entity_add", "%s, %s", (key, self.__ENTITY[key]))
 
 
-    def nuke(self):
+    @staticmethod
+    def nuke():
         '''
         Nuke database
         '''
@@ -269,9 +279,31 @@ class TagSchema:
         Database().script('tag/nuke')
 
 
-    def pos_list(self):
-        db = Database()
-        print(db.func('tag.pos_list'));
+    @staticmethod
+    def pos_list():
+        """
+        Returns the list of all PoS tags.
+        """
+
+        return Database().func('tag.pos_list')
+
+
+    @staticmethod
+    def dependency_list():
+        """
+        Returns the list of all dependency labels in the database.
+        """
+
+        return Database().func('tag.dependency_list')
+
+
+    @staticmethod
+    def entity_list():
+        """
+        Returns the list of all named entity relations in the database.
+        """
+
+        return Database().func('tag.entity_list')
 
 
 if __name__ == '__main__':
@@ -279,4 +311,3 @@ if __name__ == '__main__':
     tag.nuke()
     tag.create()
     tag.populate()
-    tag.pos_list()
