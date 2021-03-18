@@ -7,6 +7,13 @@ cd nlpx
 virtualenv --python=/usr/bin/python3.6 env
 source env/bin/activate
 pip install nltk
+pip install psycopg2-binary
+pip install rake-nltk
+pip install gensim
+pip install networkx
+pip install matplotlib
+pip install spacy
+python -m spacy download en_core_web_trf
 ```
 
 ```
