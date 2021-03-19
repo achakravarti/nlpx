@@ -1,39 +1,40 @@
-SET search_path TO PUBLIC;
+set search_path to public;
 
 
-CREATE SCHEMA IF NOT EXISTS tag;
+create extension if not exists pg_trgm;
+create schema if not exists tag;
 
 
-CREATE TYPE tag.pos_class AS ENUM(
+create type tag.pos_class as enum(
 	'penn_treebank',
 	'universal'
 );
 
 
-CREATE TABLE IF NOT EXISTS tag.pos(
-	_id	BIGSERIAL PRIMARY KEY,
-	_class	tag.pos_class NOT NULL,
-	_pos	VARCHAR(5) NOT NULL UNIQUE,
-	_def	VARCHAR(128) NOT NULL
+create table if not exists tag.pos(
+	_id	bigserial primary key,
+	_class	tag.pos_class not null,
+	_pos	varchar(5) not null unique,
+	_def	varchar(128) not null
 );
 
 
-CREATE TABLE IF NOT EXISTS tag.dependency(
-	_id	BIGSERIAL PRIMARY KEY,
-	_label	VARCHAR(16) NOT NULL UNIQUE,
-	_def	VARCHAR(128) NOT NULL
+create table if not exists tag.dependency(
+	_id	bigserial primary key,
+	_label	varchar(16) not null unique,
+	_def	varchar(128) not null
 );
 
 
-CREATE TABLE IF NOT EXISTS tag.entity(
-	_id	BIGSERIAL PRIMARY KEY,
-	_name	VARCHAR(16) NOT NULL UNIQUE,
-	_def	VARCHAR(128) NOT NULL
+create table if not exists tag.entity(
+	_id	bigserial primary key,
+	_name	varchar(16) not null unique,
+	_def	varchar(128) not null
 );
 
 
-GRANT USAGE ON SCHEMA tag TO nlpx;
-GRANT SELECT ON ALL TABLES IN SCHEMA tag TO nlpx;
-GRANT SELECT ON ALL SEQUENCES IN SCHEMA tag TO nlpx;
-GRANT EXECUTE ON ALL FUNCTIONS IN SCHEMA tag TO nlpx;
+grant usage on schema tag to nlpx;
+grant select on all tables in schema tag to nlpx;
+grant select on all sequences in schema tag to nlpx;
+grant execute on all functions in schema tag to nlpx;
 

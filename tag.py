@@ -48,10 +48,6 @@ class Database:
 
 
 class TagSchema:
-
-
-
-
     def __init__(self):
         self.__dbase = Database()
 
@@ -302,6 +298,22 @@ class TagSchema:
         return self.__dbase.func('tag.pos_list')
 
 
+    def pos_find(self, pos):
+        """
+        Gets the ID of a PoS tag.
+        """
+
+        return self.__dbase.func('tag.pos_find', (pos,))
+
+
+    def pos_search(self, pos):
+        """
+        Searches for matching PoS tags.
+        """
+
+        return self.__dbase.func('tag.pos_search', (pos,))
+
+
     def dependency_single(self, rec_id):
         """
         Gets a single dependency record.
@@ -316,6 +328,14 @@ class TagSchema:
         """
 
         return self.__dbase.func('tag.dependency_list')
+    
+
+    def dependency_find(self, label):
+        """
+        Gets the ID of a dependency label tag.
+        """
+
+        return self.__dbase.func('tag.dependency_find', (label,))
 
 
     def entity_single(self, rec_id):
@@ -332,11 +352,21 @@ class TagSchema:
         """
 
         return self.__dbase.func('tag.entity_list')
+    
+
+    def entity_find(self, name):
+        """
+        Gets the ID of a named entity tag.
+        """
+
+        return self.__dbase.func('tag.entity_find', (name,))
 
 
 if __name__ == '__main__':
     tag = TagSchema()
     tag.nuke()
     tag.create()
-    print(tag.pos_single("12"))
+    
+    #print(tag.entity_single("10"))
+    print(tag.pos_search("conj"))
 

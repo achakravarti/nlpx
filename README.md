@@ -25,5 +25,6 @@ postgres=# ALTER ROLE nlpx SET client_encoding TO 'utf8';
 postgres=# ALTER ROLE nlpx SET default_transaction_isolation TO 'read committed';
 postgres=# ALTER ROLE nlpx SET timezone TO 'UTC';
 postgres=# GRANT ALL PRIVILEGES ON DATABASE nlpx TO nlpx;
+postgres=# CREATE EXTENSION pg_trgm;
 postgres=# \q
 ```
