@@ -367,6 +367,7 @@ if __name__ == '__main__':
     tag.nuke()
     tag.create()
 
-    #print(tag.entity_single("10"))
-    print(tag.pos_search("conj"))
+    #print(tag.pos_single("10"))
+    #print(tag.pos_list())
+    print(tag.pos_find("X"))
 
