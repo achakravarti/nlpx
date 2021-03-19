@@ -302,12 +302,28 @@ class TagSchema:
         return self.__dbase.func('tag.pos_list')
 
 
+    def dependency_single(self, rec_id):
+        """
+        Gets a single dependency record.
+        """
+
+        return self.__dbase.func('tag.dependency_single', (rec_id))
+
+
     def dependency_list(self):
         """
         Returns the list of all dependency labels in the database.
         """
 
         return self.__dbase.func('tag.dependency_list')
+
+
+    def entity_single(self, rec_id):
+        """
+        Gets a single entity record.
+        """
+
+        return self.__dbase.func('tag.entity_single', (rec_id))
 
 
     def entity_list(self):
@@ -322,3 +338,5 @@ if __name__ == '__main__':
     tag = TagSchema()
     tag.nuke()
     tag.create()
+    print(tag.pos_single("1"))
+

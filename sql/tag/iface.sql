@@ -2,21 +2,22 @@ SET search_path TO PUBLIC;
 
 
 CREATE OR REPLACE FUNCTION tag.pos_single(
-	_id	BIGINT
+	id_	BIGINT
 ) RETURNS TABLE(
 	id	BIGINT,
 	class	VARCHAR(16),
 	pos	VARCHAR(5),
 	def	VARCHAR(128)
-) AS $func$
+) AS $$
 BEGIN
-	SELECT id, class, pos, def FROM tag.pos WHERE id = _id;
+	RETURN QUERY SELECT _id, _class::VARCHAR(16), _pos, _def FROM tag.pos
+		WHERE _id = id_;
 
 	IF NOT FOUND THEN
-		RAISE EXCEPTION 'PoS tag with ID % not available', _id;
+		RAISE EXCEPTION 'PoS tag with ID % not available', id_;
 	END IF;
 END;
-$func$ LANGUAGE plpgsql;
+$$ LANGUAGE plpgsql;
 
 
 CREATE OR REPLACE FUNCTION tag.pos_list()
@@ -25,25 +26,29 @@ RETURNS TABLE(
 	class	VARCHAR(16),
 	pos	VARCHAR(5),
 	def	VARCHAR(128)
-) AS $func$
-	SELECT id, class, pos, def FROM tag.pos ORDER BY class, pos;
-$func$ LANGUAGE sql;
+) AS $$
+BEGIN
+	RETURN QUERY SELECT _id, _class::VARCHAR(16), _pos, _def FROM tag.pos
+		ORDER BY _class, _pos;
+END;
+$$ LANGUAGE plpgsql;
 
 
 CREATE OR REPLACE PROCEDURE tag.pos_add_universal(
-	_pos	TEXT,
-	_def	TEXT
+	pos_	TEXT,
+	def_	TEXT
 ) AS $$
-	INSERT INTO tag.pos(class, pos, def) VALUES('universal', _pos, _def)
+	INSERT INTO tag.pos(_class, _pos, _def) VALUES('universal', pos_, def_)
 		ON CONFLICT DO NOTHING;
 $$ LANGUAGE sql;
 
 
 CREATE OR REPLACE PROCEDURE tag.pos_add_penn_treebank(
-	_pos	TEXT,
-	_def	TEXT
+	pos_	TEXT,
+	def_	TEXT
 ) AS $$
-	INSERT INTO tag.pos(class, pos, def) VALUES('penn_treebank', _pos, _def)
+	INSERT INTO tag.pos(_class, _pos, _def) 
+		VALUES('penn_treebank', pos_, def_)
 		ON CONFLICT DO NOTHING;
 $$ LANGUAGE sql;
 
@@ -51,20 +56,21 @@ $$ LANGUAGE sql;
 
 
 CREATE OR REPLACE FUNCTION tag.dependency_single(
-	_id	BIGINT
+	id_	BIGINT
 ) RETURNS TABLE(
 	id	BIGINT,
 	label	VARCHAR(16),
 	def	VARCHAR(128)
-) AS $func$
+) AS $$
 BEGIN
-	SELECT id, label, def FROM tag.dependency WHERE id = _id;
+	RETURN QUERY SELECT _id, _label, _def FROM tag.dependency
+		WHERE _id = id_;
 
 	IF NOT FOUND THEN
-		RAISE EXCEPTION 'PoS tag with ID % not available', _id;
+		RAISE EXCEPTION 'PoS tag with ID % not available', id_;
 	END IF;
 END;
-$func$ LANGUAGE plpgsql;
+$$ LANGUAGE plpgsql;
 
 
 CREATE OR REPLACE FUNCTION tag.dependency_list()
@@ -72,16 +78,19 @@ RETURNS TABLE(
 	id	BIGINT,
 	label	VARCHAR(16),
 	def	VARCHAR(128)
-) AS $func$
-	SELECT id, label, def FROM tag.dependency ORDER BY label;
-$func$ LANGUAGE sql;
+) AS $$
+BEGIN
+	RETURN QUERY SELECT _id, _label, _def FROM tag.dependency
+		ORDER BY _label;
+END;
+$$ LANGUAGE plpgsql;
 
 
 CREATE OR REPLACE PROCEDURE tag.dependency_add(
-	_lab	TEXT,
-	_def	TEXT
+	lab_	TEXT,
+	def_	TEXT
 ) AS $$
-	INSERT INTO tag.dependency(label, def) VALUES(_lab, _def) 
+	INSERT INTO tag.dependency(_label, _def) VALUES(lab_, def_)
 		ON CONFLICT DO NOTHING;
 $$ LANGUAGE sql;
 
@@ -89,20 +98,20 @@ $$ LANGUAGE sql;
 
 
 CREATE OR REPLACE FUNCTION tag.entity_single(
-	_id	BIGINT
+	id_	BIGINT
 ) RETURNS TABLE(
 	id	BIGINT,
 	name	VARCHAR(16),
 	def	VARCHAR(128)
-) AS $func$
+) AS $$
 BEGIN
-	SELECT id, name, def FROM tag.entity WHERE id = _id;
+	RETURN QUERY SELECT _id, _name, _def FROM tag.entity WHERE _id = id_;
 
 	IF NOT FOUND THEN
 		RAISE EXCEPTION 'PoS tag with ID % not available', _id;
 	END IF;
 END;
-$func$ LANGUAGE plpgsql;
+$$ LANGUAGE plpgsql;
 
 
 CREATE OR REPLACE FUNCTION tag.entity_list()
@@ -110,16 +119,18 @@ RETURNS TABLE(
 	id	BIGINT,
 	name	VARCHAR(16),
 	def	VARCHAR(128)
-) AS $func$
-	SELECT id, name, def FROM tag.entity ORDER BY name;
-$func$ LANGUAGE sql;
+) AS $$
+BEGIN
+	RETURN QUERY SELECT _id, _name, _def FROM tag.entity ORDER BY _name;
+END;
+$$ LANGUAGE plpgsql;
 
 
 CREATE OR REPLACE PROCEDURE tag.entity_add(
-	_name	TEXT,
-	_def	TEXT
+	name_	TEXT,
+	def_	TEXT
 ) AS $$
-	INSERT INTO tag.entity(name, def) VALUES(_name, _def) 
+	INSERT INTO tag.entity(_name, _def) VALUES(name_, def_)
 		ON CONFLICT DO NOTHING;
 $$ LANGUAGE sql;
 
