@@ -291,7 +291,7 @@ class TagSchema:
         Returns a single PoS record.
         """
 
-        return self.__dbase.func('tag.pos_single', (rec_id))
+        return self.__dbase.func('tag.pos_single', (rec_id,))
 
 
     def pos_list(self):
@@ -307,7 +307,7 @@ class TagSchema:
         Gets a single dependency record.
         """
 
-        return self.__dbase.func('tag.dependency_single', (rec_id))
+        return self.__dbase.func('tag.dependency_single', (rec_id,))
 
 
     def dependency_list(self):
@@ -323,7 +323,7 @@ class TagSchema:
         Gets a single entity record.
         """
 
-        return self.__dbase.func('tag.entity_single', (rec_id))
+        return self.__dbase.func('tag.entity_single', (rec_id,))
 
 
     def entity_list(self):
@@ -338,5 +338,5 @@ if __name__ == '__main__':
     tag = TagSchema()
     tag.nuke()
     tag.create()
-    print(tag.pos_single("1"))
+    print(tag.pos_single("12"))
 
