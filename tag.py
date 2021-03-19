@@ -77,7 +77,7 @@ class TagSchema:
         }
 
         for key in tags:
-            self.__dbase.proc("tag.pos_add_universal", "%s, %s",
+            self.__dbase.proc("tags.pos_add_universal", "%s, %s",
                               (key, tags[key]))
 
 
@@ -141,7 +141,7 @@ class TagSchema:
         }
 
         for key in tags:
-            self.__dbase.proc("tag.pos_add_penn_treebank", "%s, %s",
+            self.__dbase.proc("tags.pos_add_penn_treebank", "%s, %s",
                               (key, tags[key]))
 
     def __pop_dependency(self):
@@ -219,14 +219,14 @@ class TagSchema:
         }
 
         for key in tags:
-            self.__dbase.proc("tag.dependency_add", "%s, %s", (key, tags[key]))
-    
+            self.__dbase.proc("tags.dependency_add", "%s, %s", (key, tags[key]))
+
 
     def __pop_entity(self):
         """
         Populate named entity table.
         """
-    
+
         tags = {
             "PERSON": "People, including fictional",
             "NORP": "Nationalities or religious or political groups",
@@ -257,7 +257,7 @@ class TagSchema:
         }
 
         for key in tags:
-            self.__dbase.proc("tag.entity_add", "%s, %s", (key, tags[key]))
+            self.__dbase.proc("tags.entity_add", "%s, %s", (key, tags[key]))
 
 
     def create(self):
@@ -287,7 +287,7 @@ class TagSchema:
         Returns a single PoS record.
         """
 
-        return self.__dbase.func('tag.pos_single', (rec_id,))
+        return self.__dbase.func('tags.pos_single', (rec_id,))
 
 
     def pos_list(self):
@@ -295,7 +295,7 @@ class TagSchema:
         Returns the list of all PoS tags.
         """
 
-        return self.__dbase.func('tag.pos_list')
+        return self.__dbase.func('tags.pos_list')
 
 
     def pos_find(self, pos):
@@ -303,7 +303,7 @@ class TagSchema:
         Gets the ID of a PoS tag.
         """
 
-        return self.__dbase.func('tag.pos_find', (pos,))
+        return self.__dbase.func('tags.pos_find', (pos,))
 
 
     def pos_search(self, pos):
@@ -311,7 +311,7 @@ class TagSchema:
         Searches for matching PoS tags.
         """
 
-        return self.__dbase.func('tag.pos_search', (pos,))
+        return self.__dbase.func('tags.pos_search', (pos,))
 
 
     def dependency_single(self, rec_id):
@@ -319,7 +319,7 @@ class TagSchema:
         Gets a single dependency record.
         """
 
-        return self.__dbase.func('tag.dependency_single', (rec_id,))
+        return self.__dbase.func('tags.dependency_single', (rec_id,))
 
 
     def dependency_list(self):
@@ -327,15 +327,15 @@ class TagSchema:
         Returns the list of all dependency labels in the database.
         """
 
-        return self.__dbase.func('tag.dependency_list')
-    
+        return self.__dbase.func('tags.dependency_list')
+
 
     def dependency_find(self, label):
         """
         Gets the ID of a dependency label tag.
         """
 
-        return self.__dbase.func('tag.dependency_find', (label,))
+        return self.__dbase.func('tags.dependency_find', (label,))
 
 
     def entity_single(self, rec_id):
@@ -343,7 +343,7 @@ class TagSchema:
         Gets a single entity record.
         """
 
-        return self.__dbase.func('tag.entity_single', (rec_id,))
+        return self.__dbase.func('tags.entity_single', (rec_id,))
 
 
     def entity_list(self):
@@ -351,22 +351,22 @@ class TagSchema:
         Returns the list of all named entity relations in the database.
         """
 
-        return self.__dbase.func('tag.entity_list')
-    
+        return self.__dbase.func('tags.entity_list')
+
 
     def entity_find(self, name):
         """
         Gets the ID of a named entity tag.
         """
 
-        return self.__dbase.func('tag.entity_find', (name,))
+        return self.__dbase.func('tags.entity_find', (name,))
 
 
 if __name__ == '__main__':
     tag = TagSchema()
     tag.nuke()
     tag.create()
-    
+
     #print(tag.entity_single("10"))
     print(tag.pos_search("conj"))
 

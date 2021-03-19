@@ -1,4 +1,4 @@
-SET search_path TO PUBLIC;
+set search_path to public;
 
-DROP SCHEMA IF EXISTS tag CASCADE;
+drop schema if exists tags cascade;
 
