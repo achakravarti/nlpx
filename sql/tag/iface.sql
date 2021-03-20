@@ -25,7 +25,7 @@ $$ language plpgsql;
 
 create or replace function pos_find(
 	p_tag	text
-) returns table(
+) returns table (
 	id	int
 ) as $$
 begin
@@ -50,7 +50,7 @@ create or replace procedure pos_add_universal(
 	p_tag	text,
 	p_def	text
 ) as $$
-	insert into pos(cat, tag, def)
+	insert into pos (cat, tag, def)
 		values ('UNIVERSAL', p_tag, p_def)
 		on conflict do nothing;
 $$ language sql;
@@ -60,7 +60,7 @@ create or replace procedure pos_add_penn_treebank(
 	p_tag	text,
 	p_def	text
 ) as $$
-	insert into pos(cat, tag, def)
+	insert into pos (cat, tag, def)
 		values ('PENN_TREEBANK', p_tag, p_def)
 		on conflict do nothing;
 $$ language sql;
