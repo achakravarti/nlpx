@@ -14,8 +14,7 @@ class TagSchema:
         tags = {
             "ADJ": "adjective",
             "ADP": "adposition",
-            "ADV": "adverb",
-            "AUX": "auxiliary",
+            "ADV": "adverb", "AUX": "auxiliary",
             "CONJ": "conjunction",
             "CCONJ": "coordinating conjunction",
             "DET": "determiner",

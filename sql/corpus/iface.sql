@@ -15,7 +15,7 @@ end;
 $$ language plpgsql;
 
 
-create or replace function title_list()
+create or replace function title_all()
 returns setof title
 as $$
 begin
