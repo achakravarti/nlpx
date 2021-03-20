@@ -81,5 +81,4 @@ class TitleEntity:
         Add a title entity.
         """
 
-        self.__dbase.proc('corpus.title_add', '%s %s', (title, author,))
-
+        self.__dbase.proc('corpus.title_add', '%s, %s', (title, author,))

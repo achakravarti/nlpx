@@ -33,5 +33,5 @@ create table if not exists corpus.breakup (
 grant usage on schema corpus to nlpx;
 grant select on all tables in schema corpus to nlpx;
 grant select on all sequences in schema corpus to nlpx;
-grant execute on all functions in schema tags to nlpx;
+grant execute on all functions in schema corpus to nlpx;
 
