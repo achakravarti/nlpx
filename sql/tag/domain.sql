@@ -12,7 +12,7 @@ create type tags.pos_cat as enum (
 
 
 create table if not exists tags.pos (
-	id	bigserial primary key,
+	id	int primary key generated always as identity,
 	cat	tags.pos_cat not null,
 	tag	varchar (5) not null unique,
 	def	varchar (128) not null
@@ -20,14 +20,14 @@ create table if not exists tags.pos (
 
 
 create table if not exists tags.dependency (
-	id	bigserial primary key,
+	id	int primary key generated always as identity,
 	tag	varchar (16) not null unique,
 	def	varchar (128) not null
 );
 
 
 create table if not exists tags.entity (
-	id	bigserial primary key,
+	id	int primary key generated always as identity,
 	tag	varchar (16) not null unique,
 	def	varchar (128) not null
 );

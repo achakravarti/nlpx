@@ -1,183 +1,179 @@
-set search_path to public;
+set search_path to tags, public;
 
 
-create or replace function tags.pos_single(
-	id_	bigint
-) returns setof tags.pos
+create or replace function pos_single(
+	p_id	int
+) returns setof pos
 as $$
 begin
-	return query select id, cat, tag, def from tags.pos where id = id_;
-
+	return query select id, cat, tag, def from pos where id = p_id;
 	if not found then
-		raise exception 'PoS tags.with ID % not available', id_;
+		raise exception 'PoS tags.with ID % not available', p_id;
 	end if;
 end;
 $$ language plpgsql;
 
 
-create or replace function tags.pos_list()
-returns setof tags.pos
+create or replace function pos_list()
+returns setof pos
 as $$
 begin
-	return query select id, cat, tag, def from tags.pos order by cat, tag;
+	return query select id, cat, tag, def from pos order by cat, tag;
 end;
 $$ language plpgsql;
 
 
-create or replace function tags.pos_find(
-	tag_	text
+create or replace function pos_find(
+	p_tag	text
 ) returns table(
-	id	bigint
+	id	int
 ) as $$
 begin
-	return query select tags.pos.id from tags.pos where tag = tag_;
+	return query select pos.id from pos where tag = p_tag;
 end;
 $$ language plpgsql;
 
 
 
-create or replace function tags.pos_search(
-	tag_	text
-) returns setof tags.pos
+create or replace function pos_search(
+	p_tag	text
+) returns setof pos
 as $$
 begin
-	return query select id, cat, tag, def from tags.pos where tag % tag_
+	return query select id, cat, tag, def from pos where tag % p_tag
 		order by cat, tag;
 end;
 $$ language plpgsql;
 
 
-create or replace procedure tags.pos_add_universal(
-	tag_	text,
-	def_	text
+create or replace procedure pos_add_universal(
+	p_tag	text,
+	p_def	text
 ) as $$
-	insert into tags.pos(cat, tag, def)
-		values ('UNIVERSAL', tag_, def_)
+	insert into pos(cat, tag, def)
+		values ('UNIVERSAL', p_tag, p_def)
 		on conflict do nothing;
 $$ language sql;
 
 
-create or replace procedure tags.pos_add_penn_treebank(
-	tag_	text,
-	def_	text
+create or replace procedure pos_add_penn_treebank(
+	p_tag	text,
+	p_def	text
 ) as $$
-	insert into tags.pos(cat, tag, def)
-		values ('PENN_TREEBANK', tag_, def_)
+	insert into pos(cat, tag, def)
+		values ('PENN_TREEBANK', p_tag, p_def)
 		on conflict do nothing;
 $$ language sql;
 
 
 
 
-create or replace function tags.dependency_single(
-	id_	bigint
-) returns setof tags.dependency
+create or replace function dependency_single(
+	p_id	int
+) returns setof dependency
 as $$
 begin
-	return query select id, tag, def from tags.dependency
-		where id = id_;
+	return query select id, tag, def from dependency where id = p_id;
 
 	if not found then
-		raise exception 'PoS tags.with ID % not available', id_;
+		raise exception 'PoS tags.with ID % not available', p_id;
 	end if;
 end;
 $$ language plpgsql;
 
 
-create or replace function tags.dependency_list()
-returns setof tags.dependency
+create or replace function dependency_list()
+returns setof dependency
 as $$
 begin
-	return query select id, tag, def from tags.dependency
-		order by tag;
+	return query select id, tag, def from dependency order by tag;
 end;
 $$ language plpgsql;
 
 
-create or replace function tags.dependency_find(
-	tag_	text
+create or replace function dependency_find(
+	p_tag	text
 ) returns table (
-	id	bigint
+	id	int
 ) as $$
 begin
-	return query select tags.dependency.id from tags.dependency
-		where tag = tag_;
+	return query select dependency.id from dependency where tag = p_tag;
 end;
 $$ language plpgsql;
 
 
-create or replace function tags.dependency_search(
-	tag_	text
-) returns setof tags.dependency
+create or replace function dependency_search(
+	p_tag	text
+) returns setof dependency
 as $$
 begin
-	return query select id, tag, def from tags.dependency where tag % tag_
+	return query select id, tag, def from dependency where tag % p_tag
 		order by tag;
 end;
 $$ language plpgsql;
 
 
-create or replace procedure tags.dependency_add(
-	tag_	text,
-	def_	text
+create or replace procedure dependency_add(
+	p_tag	text,
+	p_def	text
 ) as $$
-	insert into tags.dependency (tag, def) values (tag_, def_)
+	insert into dependency (tag, def) values (p_tag, p_def)
 		on conflict do nothing;
 $$ language sql;
 
 
 
 
-create or replace function tags.entity_single(
-	id_	bigint
-) returns setof tags.entity
+create or replace function entity_single(
+	p_id	int
+) returns setof entity
 as $$
 begin
-	return query select id, tag, def from tags.entity where id = id_;
+	return query select id, tag, def from entity where id = p_id;
 
 	if not found then
-		raise exception 'PoS tags.with ID % not available', id;
+		raise exception 'PoS tags.with ID % not available', p_id;
 	end if;
 end;
 $$ language plpgsql;
 
 
-create or replace function tags.entity_list()
-returns setof tags.entity
+create or replace function entity_list()
+returns setof entity
 as $$
 begin
-	return query select id, tag, def from tags.entity order by tag;
+	return query select id, tag, def from entity order by tag;
 end;
 $$ language plpgsql;
 
 
-create or replace function tags.entity_find(
-	tag_	text
+create or replace function entity_find(
+	p_tag	text
 ) returns table (
-	id	bigint
+	id	int
 ) as $$
 begin
-	return query select tags.entity.id from tags.entity where tag = tag_;
+	return query select entity.id from entity where tag = p_tag;
 end;
 $$ language plpgsql;
 
 
-create or replace function tags.entity_search(
-	_tag	text
+create or replace function entity_search(
+	p_tag	text
 ) returns setof tags.entity
 as $$
 begin
-	return query select id, tag, def from tags.entity where tag % tag_
+	return query select id, tag, def from entity where tag % p_tag
 		order by tag;
 end;
 $$ language plpgsql;
 
 
-create or replace procedure tags.entity_add(
-	tag_	text,
-	def_	text
+create or replace procedure entity_add(
+	p_tag	text,
+	p_def	text
 ) as $$
-	insert into tags.entity (tag, def) values (tag_, def_)
+	insert into entity (tag, def) values (p_tag, p_def)
 		on conflict do nothing;
 $$ language sql;
 
