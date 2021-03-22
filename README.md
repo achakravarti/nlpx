@@ -13,6 +13,7 @@ pip install gensim
 pip install networkx
 pip install matplotlib
 pip install spacy
+python -m spacy download en_core_web_sm
 python -m spacy download en_core_web_trf
 ```
 

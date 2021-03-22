@@ -5,7 +5,7 @@ Tests out functionality as it is developed.
 
 
 
-import corpus
+import corpus, engine
 
 
 
@@ -64,6 +64,29 @@ def corpus_title_search():
     print(corpus.TitleEntity().search(title="urnley"))
 
 
+def engine_analyzer():
+    """
+    Tests the analyzer engine.
+    """
+
+    nlp = engine.Analyzer("corpus/the-monkeys-paw.txt")
+
+    for para in nlp.paragraphs():
+        for sent in para.sentences():
+            print(str(sent))
+
+        print("\n")
+
+
+    para = nlp.paragraphs()[145]
+    sent = para.sentences()[2]
+
+    print(sent.text())
+    for token in sent.tokens():
+        print(str(token))
+        #print(token.index(), token.text(), token.pos(), token.dependency())
+
+
 
 if __name__ == '__main__':
     corpus_schema_create()
@@ -72,3 +95,5 @@ if __name__ == '__main__':
     corpus_title_single()
     corpus_title_find()
     corpus_title_search()
+
+    engine_analyzer()
