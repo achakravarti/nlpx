@@ -8,6 +8,7 @@ import sys
 import getopt
 import nltk
 import spacy
+import corpus
 
 
 
@@ -216,16 +217,18 @@ class Paragraph:
 
 
 
-class Analyzer:
+class Document:
     """
-    Analyses a given corpus text.
+    Represents a corpus document.
     """
 
 
-    def __init__(self, in_file):
-        self.__file = in_file
+    def __init__(self, title, author, path):
+        self.__path = path 
+        self.__title = title
+        self.__author = author
 
-        with open(self.__file) as text:
+        with open(self.__path) as text:
             paras = list(filter(lambda x: x != "",
                                 text.read().split("\n\n")))
 
@@ -236,23 +239,31 @@ class Analyzer:
                 self.__paras.append(para)
 
 
+    def title(self):
+        """
+        Gets the title of the document.
+        """
+
+        return self.__title
+
+
+    def author(self):
+        """
+        Gets the author of the document.
+        """
+
+        return self.__author
+
+
     def paragraphs(self):
         """
-        Gets a dictionary of the paragraphs in the loaded corpus text
+        Gets a dictionary of the paragraphs in the loaded corpus document.
         """
 
         return self.__paras
 
 
-    def sentences(self, para_index):
-        """
-        Gets the sentence of a given paragraph.
-        """
+    def save(self):
+        title = corpus.TitleEntity()
+        title.add(title=self.__title, author=self.__author)
 
-        nlp = nltk.sent_tokenize(self.__paras[para_index])
-
-        alist = {}
-        for  index, sent in enumerate(nlp):
-            alist[index] = sent
-
-        return alist

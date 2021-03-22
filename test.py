@@ -69,16 +69,17 @@ def engine_analyzer():
     Tests the analyzer engine.
     """
 
-    nlp = engine.Analyzer("corpus/the-monkeys-paw.txt")
+    doc = engine.Document(title="The Monkey's Paw", author="W. W. Jacobs",
+                          path="corpus/the-monkeys-paw.txt")
 
-    for para in nlp.paragraphs():
+    for para in doc.paragraphs():
         for sent in para.sentences():
             print(str(sent))
 
         print("\n")
 
 
-    para = nlp.paragraphs()[145]
+    para = doc.paragraphs()[145]
     sent = para.sentences()[2]
 
     print(sent.text())
@@ -86,6 +87,7 @@ def engine_analyzer():
         print(str(token))
         #print(token.index(), token.text(), token.pos(), token.dependency())
 
+    doc.save()
 
 
 if __name__ == '__main__':
