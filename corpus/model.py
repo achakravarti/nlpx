@@ -1,9 +1,3 @@
-"""
-Provides functionality for the corpus schema.
-"""
-
-
-
 from database import Database
 
 
@@ -35,9 +29,9 @@ class Schema:
 
 
 
-class TitleEntity:
+class Title:
     """
-    Corpus title entity.
+    Corpus title model.
     """
 
     def __init__(self):
@@ -82,3 +76,4 @@ class TitleEntity:
         """
 
         self.__dbase.proc('corpus.title_add', '%s, %s', (title, author,))
+

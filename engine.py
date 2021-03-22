@@ -8,7 +8,7 @@ import sys
 import getopt
 import nltk
 import spacy
-import corpus
+import corpus.model
 
 
 
@@ -264,6 +264,6 @@ class Document:
 
 
     def save(self):
-        title = corpus.TitleEntity()
+        title = corpus.model.Title()
         title.add(title=self.__title, author=self.__author)
 
