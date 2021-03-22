@@ -70,7 +70,7 @@ def engine_analyzer():
     """
 
     doc = engine.Document(title="The Monkey's Paw", author="W. W. Jacobs",
-                          path="corpus/the-monkeys-paw.txt")
+                          path="sources/the-monkeys-paw.txt")
 
     for para in doc.paragraphs():
         for sent in para.sentences():
