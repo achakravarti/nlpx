@@ -6,7 +6,8 @@ create or replace function pos_single(
 ) returns setof pos
 as $$
 begin
-	return query select id, cat, tag, def from pos where id = p_id;
+	return query select id, cat, tag, def from tags.pos where id = p_id;
+
 	if not found then
 		raise exception 'PoS tags.with ID % not available', p_id;
 	end if;
@@ -18,7 +19,7 @@ create or replace function pos_all()
 returns setof pos
 as $$
 begin
-	return query select id, cat, tag, def from pos order by cat, tag;
+	return query select id, cat, tag, def from tags.pos order by cat, tag;
 end;
 $$ language plpgsql;
 
@@ -29,7 +30,7 @@ create or replace function pos_find(
 	id	int
 ) as $$
 begin
-	return query select pos.id from pos where tag = p_tag;
+	return query select pos.id from tags.pos where tag = p_tag;
 end;
 $$ language plpgsql;
 
@@ -40,7 +41,7 @@ create or replace function pos_search(
 ) returns setof pos
 as $$
 begin
-	return query select id, cat, tag, def from pos where tag % p_tag
+	return query select id, cat, tag, def from tags.pos where tag % p_tag
 		order by cat, tag;
 end;
 $$ language plpgsql;
@@ -73,7 +74,7 @@ create or replace function dependency_single(
 ) returns setof dependency
 as $$
 begin
-	return query select id, tag, def from dependency where id = p_id;
+	return query select id, tag, def from tags.dependency where id = p_id;
 
 	if not found then
 		raise exception 'PoS tags.with ID % not available', p_id;
@@ -86,7 +87,7 @@ create or replace function dependency_all()
 returns setof dependency
 as $$
 begin
-	return query select id, tag, def from dependency order by tag;
+	return query select id, tag, def from tags.dependency order by tag;
 end;
 $$ language plpgsql;
 
@@ -97,7 +98,7 @@ create or replace function dependency_find(
 	id	int
 ) as $$
 begin
-	return query select dependency.id from dependency where tag = p_tag;
+	return query select dependency.id from tags.dependency where tag = p_tag;
 end;
 $$ language plpgsql;
 
@@ -107,7 +108,7 @@ create or replace function dependency_search(
 ) returns setof dependency
 as $$
 begin
-	return query select id, tag, def from dependency where tag % p_tag
+	return query select id, tag, def from tags.dependency where tag % p_tag
 		order by tag;
 end;
 $$ language plpgsql;
@@ -129,7 +130,7 @@ create or replace function entity_single(
 ) returns setof entity
 as $$
 begin
-	return query select id, tag, def from entity where id = p_id;
+	return query select id, tag, def from tags.entity where id = p_id;
 
 	if not found then
 		raise exception 'PoS tags.with ID % not available', p_id;
@@ -142,7 +143,7 @@ create or replace function entity_all()
 returns setof entity
 as $$
 begin
-	return query select id, tag, def from entity order by tag;
+	return query select id, tag, def from tags.entity order by tag;
 end;
 $$ language plpgsql;
 
@@ -153,7 +154,7 @@ create or replace function entity_find(
 	id	int
 ) as $$
 begin
-	return query select entity.id from entity where tag = p_tag;
+	return query select entity.id from tags.entity where tag = p_tag;
 end;
 $$ language plpgsql;
 
@@ -163,7 +164,7 @@ create or replace function entity_search(
 ) returns setof tags.entity
 as $$
 begin
-	return query select id, tag, def from entity where tag % p_tag
+	return query select id, tag, def from tags.entity where tag % p_tag
 		order by tag;
 end;
 $$ language plpgsql;

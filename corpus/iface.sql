@@ -115,25 +115,3 @@ begin
 end;
 $$ language plpgsql;
 
-
-create or replace function breakup_single(
-	p_id	int;
-) returns table (
-	id	int,
-	title	text,
-	para	int,
-	sent	int,
-	idx	int,
-	pos	text
-) as $$
-declare
-	v_title	setof title;
-begin
-	v_title := title_single(select corpus.breakup.title from breakup
-		where corpus.breakup.id = p_id);
-	
-	return query select NULL, NULL, NULL, NULL, NULL, NULL;
-end;
-$$ language plpgsql;
-
-

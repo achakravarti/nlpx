@@ -293,7 +293,7 @@ class Dependency:
         Returns the list of all dependency labels in the database.
         """
 
-        return self.__dbase.func("tags.dependency_list")
+        return self.__dbase.func("tags.dependency_all")
 
 
     def find(self, label):
@@ -302,6 +302,14 @@ class Dependency:
         """
 
         return self.__dbase.func("tags.dependency_find", (label,))
+    
+
+    def search(self, dependency):
+        """
+        Searches for matching dependency labels.
+        """
+
+        return self.__dbase.func("tags.dependency_search", (dependency,))
 
 
 
@@ -323,7 +331,7 @@ class Entity:
         Returns the list of all named entity relations in the database.
         """
 
-        return self.__dbase.func("tags.entity_list")
+        return self.__dbase.func("tags.entity_all")
 
 
     def find(self, name):
@@ -332,4 +340,12 @@ class Entity:
         """
 
         return self.__dbase.func("tags.entity_find", (name,))
+    
+
+    def search(self, entity):
+        """
+        Searches for matching entity tag.
+        """
+
+        return self.__dbase.func("tags.entity_search", (entity,))
 

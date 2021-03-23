@@ -7,6 +7,52 @@ Tests out functionality as it is developed.
 
 import engine
 import corpus.model
+import tag.model
+
+
+def setup():
+    tag.model.Schema().create()
+    corpus.model.Schema().create()
+
+
+def teardown():
+    corpus.model.Schema().nuke()
+    tag.model.Schema().nuke()
+
+
+def run(test, show=False):
+    if show is False:
+        eval(test)
+    else:
+        eval("print(" + str(test) + ")")
+        print()
+
+
+def tag_pos_model(show=False):
+    model = tag.model.Pos()
+
+    run(model.single(1), show)
+    run(model.all(), show)
+    run(model.find("ADJ"), show)
+    run(model.search("CCON"), show)
+
+
+def tag_dependency_model(show=False):
+    model = tag.model.Dependency()
+
+    run(model.single(1), show)
+    run(model.all(), show)
+    run(model.find("root"), show)
+    run(model.search("num"), show)
+
+
+def tag_entity_model(show=False):
+    model = tag.model.Entity()
+
+    run(model.single(1), show)
+    run(model.all(), show)
+    run(model.find("DRV"), show)
+    run(model.search("GPE"), show)
 
 
 
@@ -36,5 +82,12 @@ def engine_analyzer():
 
 
 if __name__ == '__main__':
+    setup()
 
-    engine_analyzer()
+    tag_pos_model()
+    tag_dependency_model()
+    tag_entity_model()
+
+    teardown()
+
+    #engine_analyzer()
