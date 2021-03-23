@@ -40,7 +40,7 @@ class Title:
 
     def single(self, rec_id):
         """
-        Gets a single corpus title entity.
+        Gets a single corpus title record.
         """
 
         return self.__dbase.func('corpus.title_single', (rec_id,))
@@ -48,7 +48,7 @@ class Title:
 
     def all(self):
         """
-        Gets all corpus title entities.
+        Gets all corpus title records.
         """
 
         return self.__dbase.func('corpus.title_all')
@@ -56,7 +56,7 @@ class Title:
 
     def find(self, title):
         """
-        Finds a corpus title entity.
+        Finds a corpus title record.
         """
 
         return self.__dbase.func('corpus.title_find', (title,))
@@ -64,7 +64,7 @@ class Title:
 
     def search(self, title):
         """
-        Searches for matching title entities.
+        Searches for matching title records.
         """
 
         return self.__dbase.func('corpus.title_search', (title,))
@@ -72,8 +72,58 @@ class Title:
 
     def add(self, title, author):
         """
-        Add a title entity.
+        Add a title record.
         """
 
         self.__dbase.proc('corpus.title_add', '%s, %s', (title, author,))
+
+
+
+class Token:
+    """
+    Corpus token model.
+    """
+
+    def __init__(self):
+        self.__dbase = Database()
+
+
+    def single(self, rec_id):
+        """
+        Gets a single token record.
+        """
+
+        return self.__dbase.func('corpus.token_single', (rec_id,))
+
+
+    def all(self):
+        """
+        Gets all corpus title records.
+        """
+
+        return self.__dbase.func('corpus.token_all')
+
+
+    def find(self, lexeme):
+        """
+        Finds a token record with a given lexeme.
+        """
+
+        return self.__dbase.func('corpus.token_find', (lexeme,))
+
+
+    def search(self, lexeme):
+        """
+        Searches for token records matching a given lexeme.
+        """
+
+        return self.__dbase.func('corpus.token_search', (lexeme,))
+
+
+    def add(self, lexeme, pos):
+        """
+        Adds a new token record.
+        """
+
+        self.__dbase.proc('corpus.token_add', '%s, %s', (lexeme, pos,))
 
