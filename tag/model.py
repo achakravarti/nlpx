@@ -219,8 +219,8 @@ class Schema:
         Create database
         """
 
-        self.__dbase.script('tag/domain')
-        self.__dbase.script('tag/iface')
+        self.__dbase.script("tag/domain")
+        self.__dbase.script("tag/iface")
 
         self.__pop_universal()
         self.__pop_penn_treebank()
@@ -229,9 +229,9 @@ class Schema:
 
 
     def nuke(self):
-        '''
+        """
         Nuke database
-        '''
+        """
 
         self.__dbase.script('tag/nuke')
 
@@ -247,7 +247,7 @@ class Pos:
         Returns a single PoS record.
         """
 
-        return self.__dbase.func('tags.pos_single', (rec_id,))
+        return self.__dbase.func("tags.pos_single", (rec_id,))
 
 
     def all(self):
@@ -255,7 +255,7 @@ class Pos:
         Returns the list of all PoS tags.
         """
 
-        return self.__dbase.func('tags.pos_all')
+        return self.__dbase.func("tags.pos_all")
 
 
     def find(self, pos):
@@ -263,7 +263,7 @@ class Pos:
         Gets the ID of a PoS tag.
         """
 
-        return self.__dbase.func('tags.pos_find', (pos,))
+        return self.__dbase.func("tags.pos_find", (pos,))
 
 
     def search(self, pos):
@@ -271,7 +271,7 @@ class Pos:
         Searches for matching PoS tags.
         """
 
-        return self.__dbase.func('tags.pos_search', (pos,))
+        return self.__dbase.func("tags.pos_search", (pos,))
 
 
 
@@ -285,7 +285,7 @@ class Dependency:
         Gets a single dependency record.
         """
 
-        return self.__dbase.func('tags.dependency_single', (rec_id,))
+        return self.__dbase.func("tags.dependency_single", (rec_id,))
 
 
     def all(self):
@@ -293,7 +293,7 @@ class Dependency:
         Returns the list of all dependency labels in the database.
         """
 
-        return self.__dbase.func('tags.dependency_list')
+        return self.__dbase.func("tags.dependency_list")
 
 
     def find(self, label):
@@ -301,7 +301,7 @@ class Dependency:
         Gets the ID of a dependency label tag.
         """
 
-        return self.__dbase.func('tags.dependency_find', (label,))
+        return self.__dbase.func("tags.dependency_find", (label,))
 
 
 
@@ -315,7 +315,7 @@ class Entity:
         Gets a single entity record.
         """
 
-        return self.__dbase.func('tags.entity_single', (rec_id,))
+        return self.__dbase.func("tags.entity_single", (rec_id,))
 
 
     def all(self):
@@ -323,7 +323,7 @@ class Entity:
         Returns the list of all named entity relations in the database.
         """
 
-        return self.__dbase.func('tags.entity_list')
+        return self.__dbase.func("tags.entity_list")
 
 
     def find(self, name):
@@ -331,5 +331,5 @@ class Entity:
         Gets the ID of a named entity tag.
         """
 
-        return self.__dbase.func('tags.entity_find', (name,))
+        return self.__dbase.func("tags.entity_find", (name,))
 
