@@ -14,7 +14,7 @@ end;
 $$ language plpgsql;
 
 
-create or replace function pos_list()
+create or replace function pos_all()
 returns setof pos
 as $$
 begin
@@ -82,7 +82,7 @@ end;
 $$ language plpgsql;
 
 
-create or replace function dependency_list()
+create or replace function dependency_all()
 returns setof dependency
 as $$
 begin
@@ -138,7 +138,7 @@ end;
 $$ language plpgsql;
 
 
-create or replace function entity_list()
+create or replace function entity_all()
 returns setof entity
 as $$
 begin
