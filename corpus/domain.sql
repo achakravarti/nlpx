@@ -26,7 +26,8 @@ create table if not exists corpus.breakup (
 	token	int references corpus.token (id) on delete cascade,
 	idx	int not null,
 	sent	int not null,
-	para	int not null
+	para	int not null,
+	unique (title, token, idx, sent, para)
 );
 
 

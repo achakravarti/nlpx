@@ -19,7 +19,7 @@ class Database:
         """
 
         with self.__conn.cursor() as cur:
-            cur.execute(open('sql/' + script + '.sql', 'r').read())
+            cur.execute(open(script + '.sql', 'r').read())
 
 
     def proc(self, proc, params=None, args=None):

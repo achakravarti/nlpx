@@ -6,8 +6,7 @@ Tests out functionality as it is developed.
 
 
 import engine
-
-
+import corpus.model
 
 
 
@@ -33,7 +32,7 @@ def engine_analyzer():
     for token in sent.tokens():
         print(str(token))
 
-    doc.save()
+    #doc.save()
 
 
 if __name__ == '__main__':

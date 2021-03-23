@@ -99,15 +99,36 @@ class Token:
 
 
     def text(self):
+        """
+        Gets the lexeme of a token.
+        """
+
         return self.__text
 
 
     def pos(self):
+        """
+        Gets the PoS of a token.
+        """
+
         return self.__pos
 
 
     def dependency(self):
+        """
+        Gets the dependency label of a token.
+        """
+
         return self.__dep
+
+
+    def save(self):
+        """
+        Saves the token to database.
+        """
+
+        model = corpus.model.Token()
+        model.add(self.__text, self.__pos)
 
 
 
@@ -167,6 +188,16 @@ class Sentence:
         return tok_list
 
 
+    def save(self):
+        """
+        Saves the tokens of a database.
+        """
+
+        for token in self.tokens():
+            token.save()
+
+
+
 
 class Paragraph:
     """
@@ -214,6 +245,15 @@ class Paragraph:
         """
 
         return self.__sent
+
+
+    def save(self):
+        """
+        Saves the sentences of a paragraph to the database.
+        """
+
+        for sent in self.__sent:
+            sent.save()
 
 
 
@@ -266,4 +306,7 @@ class Document:
     def save(self):
         title = corpus.model.Title()
         title.add(title=self.__title, author=self.__author)
+
+        for para in self.__paras:
+            para.save()
 
