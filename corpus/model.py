@@ -16,8 +16,8 @@ class Schema:
         Creates the corpus schema.
         """
 
-        self.__dbase.script('corpus/domain')
-        self.__dbase.script('corpus/iface')
+        self.__dbase.script("corpus/domain")
+        self.__dbase.script("corpus/iface")
 
 
     def nuke(self):
@@ -25,7 +25,7 @@ class Schema:
         Destroys the corpus schema.
         """
 
-        self.__dbase.script('corpus/nuke')
+        self.__dbase.script("corpus/nuke")
 
 
 
@@ -43,7 +43,7 @@ class Title:
         Gets a single corpus title record.
         """
 
-        return self.__dbase.func('corpus.title_single', (rec_id,))
+        return self.__dbase.func("corpus.title_single", (rec_id,))
 
 
     def all(self):
@@ -51,7 +51,7 @@ class Title:
         Gets all corpus title records.
         """
 
-        return self.__dbase.func('corpus.title_all')
+        return self.__dbase.func("corpus.title_all")
 
 
     def find(self, title):
@@ -59,7 +59,7 @@ class Title:
         Finds a corpus title record.
         """
 
-        return self.__dbase.func('corpus.title_find', (title,))
+        return self.__dbase.func("corpus.title_find", (title,))
 
 
     def search(self, title):
@@ -67,7 +67,7 @@ class Title:
         Searches for matching title records.
         """
 
-        return self.__dbase.func('corpus.title_search', (title,))
+        return self.__dbase.func("corpus.title_search", (title,))
 
 
     def add(self, title, author):
@@ -75,7 +75,7 @@ class Title:
         Add a title record.
         """
 
-        self.__dbase.proc('corpus.title_add', '%s, %s', (title, author,))
+        self.__dbase.proc("corpus.title_add", "%s, %s", (title, author,))
 
 
 
@@ -93,7 +93,7 @@ class Token:
         Gets a single token record.
         """
 
-        return self.__dbase.func('corpus.token_single', (rec_id,))
+        return self.__dbase.func("corpus.token_single", (rec_id,))
 
 
     def all(self):
@@ -101,7 +101,7 @@ class Token:
         Gets all corpus title records.
         """
 
-        return self.__dbase.func('corpus.token_all')
+        return self.__dbase.func("corpus.token_all")
 
 
     def find(self, lexeme):
@@ -109,7 +109,7 @@ class Token:
         Finds a token record with a given lexeme.
         """
 
-        return self.__dbase.func('corpus.token_find', (lexeme,))
+        return self.__dbase.func("corpus.token_find", (lexeme,))
 
 
     def search(self, lexeme):
@@ -117,7 +117,7 @@ class Token:
         Searches for token records matching a given lexeme.
         """
 
-        return self.__dbase.func('corpus.token_search', (lexeme,))
+        return self.__dbase.func("corpus.token_search", (lexeme,))
 
 
     def add(self, lexeme, pos):
@@ -125,5 +125,57 @@ class Token:
         Adds a new token record.
         """
 
-        self.__dbase.proc('corpus.token_add', '%s, %s', (lexeme, pos,))
+        self.__dbase.proc("corpus.token_add", "%s, %s", (lexeme, pos,))
+
+
+
+class Breakup:
+    """
+    Corpus breakup model.
+    """
+
+    def __init__(self):
+        self.__dbase = Database()
+
+
+    def single(self, rec_id):
+        """
+        Gets a single breakup record.
+        """
+
+        return self.__dbase.func("corpus.breakup_single", (rec_id,))
+
+
+    def all(self):
+        """
+        Gets all breakup records.
+        """
+
+        return self.__dbase.func("corpus.breakup_all")
+
+
+    def find(self, token, title, para, sent, index):
+        """
+        Finds a breakup record with a given set of attributes.
+        """
+
+        return self.__dbase.func("corpus.breakup_find", 
+                                 (token, title, para, sent, index,))
+
+
+    def search(self, token):
+        """
+        Searches all breakup records matching a given token.
+        """
+
+        return self.__dbase.func("corpus.breakup_search", (token,))
+
+
+    def add(self, title, para, sent, index, lexeme, pos):
+        """
+        Adds a new breakup record.
+        """
+
+        self.__dbase.proc("corpus.breakup_add", "%s, %d, %d, %d, %s, %s",
+                          (title, para, sent, index, lexeme, pos,))
 
