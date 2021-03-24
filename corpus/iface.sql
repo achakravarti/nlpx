@@ -142,6 +142,112 @@ create or replace procedure token_add(
 $$ language sql;
 
 
+create or replace function breakup_single(
+	p_id	int
+) returns table (
+	id	int,
+	title	text,
+	para	int,
+	sent	int,
+	idx	int,
+	lexeme	text,
+	pos	text
+) as $$
+begin
+	return query
+	select	B.id,
+		T.title::text,
+		B.para,
+		B.sent,
+		B.idx,
+		K.lexeme::text,
+		P.tag::text
+	from corpus.breakup as B
+	inner join corpus.title as T on B.title = T.id
+	inner join corpus.token as K on B.token = K.id
+	inner join tags.pos as P on K.pos = P.id
+	where B.id = p_id;
+end;
+$$
+language plpgsql;
+
+
+create or replace function breakup_all()
+returns table (
+	id	int,
+	title	text,
+	para	int,
+	sent	int,
+	idx	int,
+	lexeme	text,
+	pos	text
+) as $$
+	select	B.id,
+		T.title::text,
+		B.para,
+		B.sent,
+		B.idx,
+		K.lexeme::text,
+		P.tag::text
+	from corpus.breakup as B
+	inner join corpus.title as T on B.title = T.id
+	inner join corpus.token as K on B.token = K.id
+	inner join tags.pos as P on K.pos = P.id
+	order by T.title, B.para, B.sent, B.idx;
+$$
+language sql;
+
+
+create or replace function breakup_find(
+	p_title		text,
+	p_para		int,
+	p_sent		int,
+	p_idx		int,
+	p_lexeme	text,
+	p_pos		text
+) returns table (
+	id	int
+) as $$
+	select B.id
+	from corpus.breakup as B
+	where B.title = (select id 
+			 from corpus.title_find(p_title))
+	and B.token = (select id 
+		       from corpus.token_find(p_lexeme, p_pos))
+	and B.para = p_para
+	and B.sent = p_sent
+	and B.idx = p_idx;
+$$
+language sql;
+
+
+create or replace function breakup_search(
+	p_lexeme	text
+) returns table (
+	id	int,
+	title	text,
+	para	int,
+	sent	int,
+	idx	int,
+	lexeme	text,
+	pos	text
+) as $$
+	select	B.id,
+		T.title::text,
+		B.para,
+		B.sent,
+		B.idx,
+		K.lexeme::text,
+		P.tag::text
+	from corpus.breakup as B
+	inner join corpus.title as T on B.title = T.id
+	inner join corpus.token as K on B.token = K.id
+	inner join tags.pos as P on K.pos = P.id
+	where K.lexeme % p_lexeme
+	order by T.title, B.para, B.sent, B.idx;
+$$ language sql;
+
+
 create or replace procedure breakup_add(
 	p_title		text,
 	p_para		int,
@@ -150,5 +256,16 @@ create or replace procedure breakup_add(
 	p_lexeme	text,
 	p_pos		text
 ) as $$
+	insert into corpus.breakup	(title, 
+					 token, 
+					 idx, 
+					 sent, 
+					 para)
+	values	(corpus.title_find(p_title), 
+		 corpus.token_find(p_lexeme, p_pos), 
+		 p_idx, 
+		 p_sent, 
+		p_para)
+	on conflict do nothing;
 $$ language sql;
 

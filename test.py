@@ -79,6 +79,18 @@ def corpus_token_model(show=False):
     run(model.search("Joe"), show)
 
 
+def corpus_breakup_model(show=False):
+    model = corpus.model.Breakup()
+
+    model.add("Thurnley Abbey", 0, 0, 0, "Joe", "PROPN")
+    model.add("The Monkey's Paw", 1, 1, 1, "the", "DET")
+
+    run(model.single(1), show)
+    run(model.all(), show)
+    run(model.find("The Monkey's Paw", 1, 1, 1, "the", "DET"), show)
+    run(model.search("the"), show)
+
+
 
 def engine_analyzer():
     """
@@ -106,6 +118,7 @@ def engine_analyzer():
 
 
 if __name__ == '__main__':
+    teardown()
     setup()
 
     tag_pos_model()
@@ -113,7 +126,8 @@ if __name__ == '__main__':
     tag_entity_model()
 
     corpus_title_model()
-    corpus_token_model(True)
+    corpus_token_model()
+    corpus_breakup_model(True)
 
     teardown()
 

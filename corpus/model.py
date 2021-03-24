@@ -154,21 +154,21 @@ class Breakup:
         return self.__dbase.func("corpus.breakup_all")
 
 
-    def find(self, token, title, para, sent, index):
+    def find(self, title, para, sent, index, lexeme, pos):
         """
         Finds a breakup record with a given set of attributes.
         """
 
         return self.__dbase.func("corpus.breakup_find", 
-                                 (token, title, para, sent, index,))
+                                 (title, para, sent, index, lexeme, pos,))
 
 
-    def search(self, token):
+    def search(self, lexeme):
         """
         Searches all breakup records matching a given token.
         """
 
-        return self.__dbase.func("corpus.breakup_search", (token,))
+        return self.__dbase.func("corpus.breakup_search", (lexeme,))
 
 
     def add(self, title, para, sent, index, lexeme, pos):
@@ -176,6 +176,6 @@ class Breakup:
         Adds a new breakup record.
         """
 
-        self.__dbase.proc("corpus.breakup_add", "%s, %d, %d, %d, %s, %s",
+        self.__dbase.proc("corpus.breakup_add", "%s, %s, %s, %s, %s, %s",
                           (title, para, sent, index, lexeme, pos,))
 
