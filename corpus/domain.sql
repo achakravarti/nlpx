@@ -15,15 +15,15 @@ create table if not exists corpus.title (
 create table if not exists corpus.token (
 	id	int primary key generated always as identity,
 	lexeme	varchar (64) not null,
-	pos	int references tags.pos (id) on delete cascade,
+	pos	int not null references tags.pos (id) on delete cascade,
 	unique (lexeme, pos)
 );
 
 
 create table if not exists corpus.breakup (
 	id	int primary key generated always as identity,
-	title	int references corpus.title (id) on delete cascade,
-	token	int references corpus.token (id) on delete cascade,
+	title	int not null references corpus.title (id) on delete cascade,
+	token	int not null references corpus.token (id) on delete cascade,
 	idx	int not null,
 	sent	int not null,
 	para	int not null,

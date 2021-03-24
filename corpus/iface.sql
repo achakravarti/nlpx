@@ -18,10 +18,8 @@ $$ language plpgsql;
 create or replace function title_all()
 returns setof title
 as $$
-begin
-	return query select id, title, author from corpus.title order by title;
-end;
-$$ language plpgsql;
+	select id, title, author from corpus.title order by title;
+$$ language sql;
 
 
 create or replace function title_find(
@@ -29,11 +27,8 @@ create or replace function title_find(
 ) returns table (
 	id	int
 ) as $$
-begin
-	return query select corpus.title.id from corpus.title 
-		where title = p_title;
-end;
-$$ language plpgsql;
+	select corpus.title.id from corpus.title where title = p_title;
+$$ language sql;
 
 
 create or replace function title_search(
@@ -58,11 +53,17 @@ $$ language sql;
 
 create or replace function token_single(
 	p_id	int
-) returns setof token
-as $$
+) returns table (
+	id	int,
+	lexeme	text,
+	pos	text
+) as $$
 begin
-	return query select id, lexeme, pos from token where id = p_id;
-
+	return query select corpus.token.id, corpus.token.lexeme::text,
+		tags.pos.tag::text as pos from corpus.token 
+		inner join tags.pos on corpus.token.pos = tags.pos.id
+		where corpus.token.id = p_id;
+	
 	if not found then
 		raise exception 'token with ID % not available', p_id;
 	end if;
@@ -71,47 +72,53 @@ $$ language plpgsql;
 
 
 create or replace function token_all()
-returns setof token
-as $$
-begin
-	return query select id, lexeme, pos from token order by lexeme, pos;
-end;
-$$ language plpgsql;
+returns table (
+	id	int,
+	lexeme	text,
+	pos	text
+) as $$
+	select corpus.token.id, corpus.token.lexeme::text, 
+		tags.pos.tag::text as pos from corpus.token 
+		inner join tags.pos on corpus.token.pos = tags.pos.id;
+$$ language sql;
 
 
 create or replace function token_find(
-	p_lexeme	text
+	p_lexeme	text,
+	p_pos		text
 ) returns table (
 	id	int
 ) as $$
-begin
-	return query select corpus.token.id from token where lexeme = p_lexeme;
-end;
-$$ language plpgsql;
+	select corpus.token.id from corpus.token where lexeme = p_lexeme
+		and pos = (select id from tags.pos_find(p_pos));
+$$ language sql;
 
 
 create or replace function token_search(
 	p_lexeme	text
 ) returns setof token
 as $$
-begin
-	return query select id, lexeme, pos from token where lexeme % p_lexeme
+	select id, lexeme, pos from corpus.token where lexeme % p_lexeme
 		order by lexeme;
-end;
-$$ language plpgsql;
+$$ language sql;
 
 
 create or replace procedure token_add(
 	p_lexeme	text,
 	p_pos		text
 ) as $$
-declare
-	v_pos	int;
-begin
-	v_pos := tags.pos_find(p_pos);
+	insert into corpus.token (lexeme, pos) values (p_lexeme, 
+		tags.pos_find(p_pos)) on conflict do nothing;
+$$ language sql;
 
-	insert into token (lexeme, pos) values (p_lexeme, v_pos)
-		on conflict do nothing;
-end;
-$$ language plpgsql;
+
+create or replace procedure breakup_add(
+	p_title		text,
+	p_para		int,
+	p_sent		int,
+	p_idx		int,
+	p_lexeme	text,
+	p_pos		text
+) as $$
+$$ language sql;
 

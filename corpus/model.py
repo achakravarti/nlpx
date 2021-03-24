@@ -104,12 +104,12 @@ class Token:
         return self.__dbase.func("corpus.token_all")
 
 
-    def find(self, lexeme):
+    def find(self, lexeme, pos):
         """
-        Finds a token record with a given lexeme.
+        Finds a token record with a given lexeme and PoS.
         """
 
-        return self.__dbase.func("corpus.token_find", (lexeme,))
+        return self.__dbase.func("corpus.token_find", (lexeme, pos))
 
 
     def search(self, lexeme):

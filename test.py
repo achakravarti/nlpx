@@ -55,6 +55,30 @@ def tag_entity_model(show=False):
     run(model.search("GPE"), show)
 
 
+def corpus_title_model(show=False):
+    model = corpus.model.Title()
+
+    model.add("The Monkey's Paw", "W. W. Jacobs")
+    model.add("Thurnley Abbey", "Perceval Landon")
+
+    run(model.single(1), show)
+    run(model.all(), show)
+    run(model.find("Thurnley Abbey"), show)
+    run(model.search("Abbey"), show)
+
+
+def corpus_token_model(show=False):
+    model = corpus.model.Token()
+
+    model.add("Joe", "PROPN")
+    model.add("the", "DET")
+
+    run(model.single(1), show)
+    run(model.all(), show)
+    run(model.find("the", "DET"), show)
+    run(model.search("Joe"), show)
+
+
 
 def engine_analyzer():
     """
@@ -87,6 +111,9 @@ if __name__ == '__main__':
     tag_pos_model()
     tag_dependency_model()
     tag_entity_model()
+
+    corpus_title_model()
+    corpus_token_model(True)
 
     teardown()
 
