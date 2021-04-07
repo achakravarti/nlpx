@@ -194,9 +194,31 @@ returns table (
 	inner join corpus.token as K on B.token = K.id
 	inner join tags.pos as P on K.pos = P.id
 	order by T.title, B.para, B.sent, B.idx;
-$$
-language sql;
+$$ language sql;
 
+
+create or replace function breakup_title(
+	p_text	text
+) returns table (
+	id	int,
+	lexeme	text,
+	pos	text,
+	idx	int,
+	sent	int,
+	para	int
+) as $$
+	select 	B.id,
+		T.lexeme::text,
+		P.tag::text,
+		B.idx,
+		B.sent,
+		B.para
+	from corpus.breakup as B
+	inner join corpus.token as T on B.token = T.id
+	inner join tags.pos as P on T.pos = P.id
+	where B.title = (select id from corpus.title_find(p_text))
+	order by B.para, B.sent, B.idx;
+$$ language sql;
 
 create or replace function breakup_find(
 	p_title		text,
@@ -217,8 +239,7 @@ create or replace function breakup_find(
 	and B.para = p_para
 	and B.sent = p_sent
 	and B.idx = p_idx;
-$$
-language sql;
+$$ language sql;
 
 
 create or replace function breakup_search(

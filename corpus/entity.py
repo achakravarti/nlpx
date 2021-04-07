@@ -229,20 +229,10 @@ class Document:
     """
 
 
-    def __init__(self, title, author, path):
-        self.__path = path 
+    def __init__(self, title, author):
         self.__title = title
         self.__author = author
-
-        with open(self.__path) as text:
-            paras = list(filter(lambda x: x != "",
-                                text.read().split("\n\n")))
-
-            self.__paras = []
-
-            for index, para in enumerate(paras):
-                para = Paragraph(title, index, para)
-                self.__paras.append(para)
+        self.__paras = []
 
 
     def title(self):
@@ -269,6 +259,18 @@ class Document:
         return self.__paras
 
 
+    def parse(self, path):
+        """
+        Parses a text file.
+        """
+
+        with open(path) as text:
+            paras = list(filter(lambda x: x != "", text.read().split("\n\n")))
+
+            for index, para in enumerate(paras):
+                self.__paras.append(Paragraph(self.__title, index, para))
+
+
     def save(self):
         title = corpus.model.Title()
         title.add(title=self.__title, author=self.__author)
@@ -279,3 +281,9 @@ class Document:
             para.save()
 
         print("Done.")
+
+
+    def load(self):
+        title = corpus.model.Title()
+        return title.breakup(self.__title)
+

@@ -99,10 +99,11 @@ def entity_analyzer():
     """
 
     doc = corpus.entity.Document(title="The Monkey's Paw", 
-                                 author="W. W. Jacobs",
-                                 path="sources/the-monkeys-paw.txt")
+                                 author="W. W. Jacobs")
 
+    doc.parse("sources/the-monkeys-paw.txt")
     doc.save()
+    print(doc.load())
 
 
 if __name__ == '__main__':

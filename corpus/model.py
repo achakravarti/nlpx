@@ -78,6 +78,14 @@ class Title:
         self.__dbase.proc("corpus.title_add", "%s, %s", (title, author,))
 
 
+    def breakup(self, title):
+        """
+        Gets all tokens for a given title
+        """
+
+        return self.__dbase.func("corpus.breakup_title", (title,))
+
+
 
 class Token:
     """
@@ -102,6 +110,7 @@ class Token:
         """
 
         return self.__dbase.func("corpus.token_all")
+
 
 
     def find(self, lexeme, pos):
