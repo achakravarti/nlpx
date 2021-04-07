@@ -1,6 +1,7 @@
 import nltk
 import spacy
 import corpus.model
+import json
 
 
 class Token:
@@ -259,6 +260,14 @@ class Document:
         return self.__paras
 
 
+    def text(self):
+        text = ""
+        for para in self.__paras:
+            text = text + para.text() + "\n\n"
+
+        return text
+
+
     def parse(self, path):
         """
         Parses a text file.
@@ -284,6 +293,25 @@ class Document:
 
 
     def load(self):
+        self.__paras = []
         title = corpus.model.Title()
-        return title.breakup(self.__title)
+        tokens = json.loads(title.breakup(self.__title))
+        paras = tokens[-1]["para"]
+
+        last_para = 0
+        text = ""
+
+        for t in tokens:
+            para = t["para"]
+            lexeme = t["lexeme"]
+
+            if para == last_para:
+                if t["pos"] != 'PUNCT': 
+                    text = text + " " + lexeme
+                else:
+                    text = text + lexeme
+            else:
+                self.__paras.append(Paragraph(self.__title, para, text))
+                last_para = para
+                text = ""
 

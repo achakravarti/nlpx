@@ -101,14 +101,15 @@ def entity_analyzer():
     doc = corpus.entity.Document(title="The Monkey's Paw", 
                                  author="W. W. Jacobs")
 
-    doc.parse("sources/the-monkeys-paw.txt")
-    doc.save()
-    print(doc.load())
+    #doc.parse("sources/the-monkeys-paw.txt")
+    #doc.save()
+    doc.load()
+    print(doc.text())
 
 
 if __name__ == '__main__':
-    teardown()
-    setup()
+    #teardown()
+    #setup()
 
     """
     tag_pos_model()
